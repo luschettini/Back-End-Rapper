@@ -83,3 +83,47 @@ suspeitosRoutes.get("/", (req, res) => {
             novoSuspeitos,
     })
         })
+
+
+//Rota para buscar um suspeito pelo id  
+suspeitosRoutes.get("/:id", (req, res) => {
+    const { id } = req.params
+
+//Busca um suspeito pelo id no array de suspeitos
+    const suspeitos = suspeitos.find((song) => 
+        song.id === Number(id)
+    )
+
+ //Verificação se o suspeito foi encontrado
+    if (!suspeitos) {
+        return res.status(404).send({ message: "Suspeito não encontrado!" })
+    }
+
+    return res.status(200).send(suspeitos)
+})
+
+// Rota para atualizar um suspeito pelo id
+suspeitosRoutes.put("/:id", (req, res) => {
+    const { id } = req.params
+    const suspeitos = suspeitos.find((song) => 
+        song.id === Number(id)
+    )
+
+ //Verificação se o suspeito foi encontrado
+    if (!suspeitos) {
+        return res.status(404).send({message: "Suspeito não não encontrado!" })
+    }
+
+    const {nome, idade, descricao_fisica, atividade_suspeita} = req.body
+    
+
+    rapper.nome = nome
+    rapper.idade = idade
+    rapper.descricao = descricao_fisica
+    rapper.suspeito = atividade_suspeita
+
+    return res.status(201).send({
+        message: "Suspeitos atualizados!",
+        suspeitos,
+    })
+})
