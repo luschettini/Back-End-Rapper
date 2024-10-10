@@ -43,29 +43,43 @@ suspeitosRoutes.get("/", (req, res) => {
 });
 
 // Rota para cadastrar um novo suspeito
-suspeitosRoutes.post("/", (req, res) => {
-    const { nome, idade, descricao_fisica, atividade_suspeita } = req.body;
-  
-  // Validação dos campos obrigatórios
-  if (!nome || !idade || !atividade_suspeita) {
-    return res.status(400).json({
-      message: "Os campos nome, idade e atividades suspeitas são obrigatórios!",
-    });
-  }
+    suspeitosRoutes.post("/", (req, res) => {
+        const { nome, idade, descricao_fisica, atividade_suspeita} = req.body
 
-   // Validação para identificar se a idade é um número inteiro
-  if ((Number.isInteger(idade)) == false) {
-    return res.status(400).json({
-        message: "O campo nome é obrigatório!",
-    });
-    }
+//Validação dos campos nome e idade para efetuação do cadastro
+        if(!nome || !idade || !atividade_suspeita) {
+            return res.status(400).send({
+                message: "Os campos nome, idadee atividade suspeita são obrigatórias para o cadastro" 
+            })
+        }
 
-  // Validação de existência de suspeitos
-  if (atividade_suspeita != "sim" && atividade_suspeita != "não") {
-    return res.status(400).send({
-      message: "Digite 'sim' ou 'não'!",
-    });
-  }
-});
+//Validação se o rapper é suspeito ou não
+        if(suspeito != "sim" && suspeito != "não"){
+            return res.status(400).send({
+                message: "Digite sim ou não" 
+        })
+        }
 
-  export default suspeitosRoutes;
+//Validação para que tenha apenas números inteiros
+        if(Number.isInteger(idade) == false){
+            return res.status(400).send({
+                message: "A idade do suspeito deve ser em números inteiros"
+        })
+        }
+
+//Criação de um novo suspeito
+        const novoSuspeitos = {
+            id: Number(Math.floor(Math.random() * 99) + 1),
+            nome,
+            idade,
+            descricao_fisica, 
+            atividade_suspeita
+        }
+        
+//Adiciona o suspeito ao array de suspeitos
+        suspeitos.push(novoSuspeitos);
+
+        return res.status(201).send({message: "Suspeito cadastrado!",
+            novoSuspeitos,
+    })
+        })
