@@ -84,7 +84,6 @@ suspeitosRoutes.get("/", (req, res) => {
     })
         })
 
-
 //Rota para buscar um suspeito pelo id  
 suspeitosRoutes.get("/:id", (req, res) => {
     const { id } = req.params
@@ -116,7 +115,6 @@ suspeitosRoutes.put("/:id", (req, res) => {
 
     const {nome, idade, descricao_fisica, atividade_suspeita} = req.body
     
-
     rapper.nome = nome
     rapper.idade = idade
     rapper.descricao = descricao_fisica
@@ -127,3 +125,29 @@ suspeitosRoutes.put("/:id", (req, res) => {
         suspeitos,
     })
 })
+
+// Rota para deletar um suspeito
+suspeitosRoutes.delete("/:id", (req, res) => {
+    const { id } = req.params;
+
+// Busca um suspeito pelo id no array de suspeitos
+const suspeitos = suspeitos.find((suspect) => suspect.id == id);
+
+// Verifica se o suspeito foi encontrado
+if (!suspeitos) {
+    return res
+    .status(404)
+    .json({ message: `Suspeito com id ${id} não encontrado!` });
+  }
+
+// Remove o suspeito do array de suspeito
+  suspeitos = suspeitos.filter((suspect) => suspect.id != id);
+
+  return res.status(200).json({
+    message: "Suspeito removido com sucesso!",
+    suspeitos,
+  });
+});
+
+  export default suspeitosRoutes;
+
