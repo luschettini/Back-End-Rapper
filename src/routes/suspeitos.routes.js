@@ -49,12 +49,12 @@ suspeitosRoutes.get("/", (req, res) => {
 //Validação dos campos nome e idade para efetuação do cadastro
         if(!nome || !idade || !atividade_suspeita) {
             return res.status(400).send({
-                message: "Os campos nome, idadee atividade suspeita são obrigatórias para o cadastro" 
+                message: "Os campos nome, idade atividade suspeita são obrigatórias para o cadastro" 
             })
         }
 
 //Validação se o rapper é suspeito ou não
-        if(suspeito != "sim" && suspeito != "não"){
+        if(atividade_suspeita != "sim" && atividade_suspeita!= "não"){
             return res.status(400).send({
                 message: "Digite sim ou não" 
         })
@@ -89,40 +89,40 @@ suspeitosRoutes.get("/:id", (req, res) => {
     const { id } = req.params
 
 //Busca um suspeito pelo id no array de suspeitos
-    const suspeitos = suspeitos.find((song) => 
-        song.id === Number(id)
+    const suspeito = suspeitos.find((suspect) => 
+        suspect.id == id
     )
 
  //Verificação se o suspeito foi encontrado
-    if (!suspeitos) {
+    if (!suspeito) {
         return res.status(404).send({ message: "Suspeito não encontrado!" })
     }
 
-    return res.status(200).send(suspeitos)
+    return res.status(200).send(suspeito)
 })
 
 // Rota para atualizar um suspeito pelo id
 suspeitosRoutes.put("/:id", (req, res) => {
     const { id } = req.params
-    const suspeitos = suspeitos.find((song) => 
-        song.id === Number(id)
+    const suspeito = suspeitos.find((suspect) => 
+        suspect.id === Number(id)
     )
 
  //Verificação se o suspeito foi encontrado
-    if (!suspeitos) {
+    if (!suspeito) {
         return res.status(404).send({message: "Suspeito não não encontrado!" })
     }
 
     const {nome, idade, descricao_fisica, atividade_suspeita} = req.body
     
-    rapper.nome = nome
-    rapper.idade = idade
-    rapper.descricao = descricao_fisica
-    rapper.suspeito = atividade_suspeita
+    suspeito.nome = nome
+    suspeito.idade = idade
+    suspeito.descricao_fisica = descricao_fisica
+    suspeito.atividade_suspeita = atividade_suspeita
 
     return res.status(201).send({
         message: "Suspeitos atualizados!",
-        suspeitos,
+        suspeito,
     })
 })
 
@@ -131,10 +131,10 @@ suspeitosRoutes.delete("/:id", (req, res) => {
     const { id } = req.params;
 
 // Busca um suspeito pelo id no array de suspeitos
-const suspeitos = suspeitos.find((suspect) => suspect.id == id);
+const suspeito = suspeitos.find((suspect) => suspect.id == id);
 
 // Verifica se o suspeito foi encontrado
-if (!suspeitos) {
+if (!suspeito) {
     return res
     .status(404)
     .json({ message: `Suspeito com id ${id} não encontrado!` });
@@ -145,7 +145,7 @@ if (!suspeitos) {
 
   return res.status(200).json({
     message: "Suspeito removido com sucesso!",
-    suspeitos,
+    suspeito,
   });
 });
 
